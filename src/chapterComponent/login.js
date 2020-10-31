@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {  Component  } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -11,7 +11,17 @@ import {
 } from "react-router-dom";
 
 class Login extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      usuario: "",
+      contraseña:""
+    };
+  }
+
   render() {
+
     return (
       <Router>
       <Container fluid  >
@@ -25,13 +35,14 @@ class Login extends Component {
                   <Form.Label className="login-label">
                     Correo Electónico
                   </Form.Label>
-                  <Form.Control type="email" placeholder="Ingrese Email" />
+                  <Form.Control type="email" placeholder="Ingrese Email" onChange = {(nombreDeUsuario) =>this.setState({usuario:nombreDeUsuario.target.value}) } />
                 </Form.Group>
                 <Form.Group controlId="formBasicPassword">
                   <Form.Label className="login-label">Contraseña</Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Ingrese contraseña"
+                    onChange = {(agregarContraseña) =>this.setState({contraseña:agregarContraseña.target.value}) }
                   />
                   <Form.Text className="text-muted"><a href="/"> ¿Has olvidado tu contraseña?</a></Form.Text>
                 </Form.Group>
