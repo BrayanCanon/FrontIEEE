@@ -9,6 +9,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+const axios = require("axios");
 
 class Login extends Component {
 
@@ -16,12 +17,30 @@ class Login extends Component {
     super(props);
     this.state = {
       usuario: "",
-      contraseña:""
+      contrasena:""
     };
+    this.handle = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      axios.post('http://localhost:3000/api/Sesion/inicioSesion',{
+        name_user: this.state.usuario,
+        u_password: this.state.contrasena
+      }).then( (response) => {
+        if(response.data.error){
+          alert(response.data.error)
+        }
+        else{
+          console.log(response.data)
+          localStorage.setItem('usurio',JSON.stringify(response.data.user[0]))
+          localStorage.setItem('token',response.data.text)
+          alert('sesión iniciada')
+        }
+      }).catch( (err) => {
+        console.log(err)
+      })
+    }
   }
-
   render() {
-
     return (
       <Router>
       <Container fluid  >
@@ -29,7 +48,7 @@ class Login extends Component {
           <Col >
           <div align="center">
             <div className="login-form">
-              <Form>
+              <Form noValidate  onSubmit={this.handle}>
                 <h4 className="title-login">Login</h4>
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label className="login-label">
@@ -42,7 +61,7 @@ class Login extends Component {
                   <Form.Control
                     type="password"
                     placeholder="Ingrese contraseña"
-                    onChange = {(agregarContraseña) =>this.setState({contraseña:agregarContraseña.target.value}) }
+                    onChange = {(agregarContrasena) =>this.setState({contrasena:agregarContrasena.target.value}) }
                   />
                   <Form.Text className="text-muted"><a href="/"> ¿Has olvidado tu contraseña?</a></Form.Text>
                 </Form.Group>
