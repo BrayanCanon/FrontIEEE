@@ -7,8 +7,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
+
 const axios = require("axios");
 
 class Login extends Component {
@@ -17,12 +19,13 @@ class Login extends Component {
     super(props);
     this.state = {
       usuario: "",
-      contrasena:""
+      contrasena:"",
+      redirect: false
     };
     this.handle = (event) => {
       event.preventDefault();
       event.stopPropagation();
-      axios.post('http://localhost:3000/api/Sesion/inicioSesion',{
+      axios.post('http://localhost:3001/api/Sesion/inicioSesion',{
         name_user: this.state.usuario,
         u_password: this.state.contrasena
       }).then( (response) => {
@@ -31,9 +34,9 @@ class Login extends Component {
         }
         else{
           console.log(response.data)
-          localStorage.setItem('usurio',JSON.stringify(response.data.user[0]))
+          localStorage.setItem('usuario',JSON.stringify(response.data.user[0]))
           localStorage.setItem('token',response.data.text)
-          alert('sesión iniciada')
+          this.setState({redirect:true})
         }
       }).catch( (err) => {
         console.log(err)
@@ -41,6 +44,9 @@ class Login extends Component {
     }
   }
   render() {
+    const {redirect} = this.state
+    if (redirect){return <Redirect to='/'/>;
+    }
     return (
       <Router>
       <Container fluid  >

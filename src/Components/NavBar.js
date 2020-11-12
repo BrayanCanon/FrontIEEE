@@ -4,12 +4,19 @@ import {NavLink, withRouter} from 'react-router-dom';
 
 class NavBar extends Component
 {
+  logout=()=>{
+    localStorage.removeItem('usuario')
+    localStorage.removeItem('token')
+
+  }
+
   getNavLinkClass = (path) => {
     return this.props.location.pathname === path ? 'active' : '';
   }
-
+  
   render()
   {
+    const state = localStorage.getItem('usuario')
     return(
     <nav className="navbar navbar-expand-lg navbar-dark " style={{backgroundColor: "#0A1B2A"}}>
       <a className="navbar-brand" href="#">
@@ -43,11 +50,30 @@ class NavBar extends Component
             <a className="nav-link" href="#">Contactanos</a>
           </li> 
         </ul>
-            <span className={this.getNavLinkClass("/Login")}>
-            <NavLink to="/Login">
-              <a class="nav-link" href="#" style={{color: 'white'}}>Login</a>
-            </NavLink>
-            </span>
+            {
+             state !=undefined? 
+             <div>
+             <span className={this.getNavLinkClass("/Login")}>
+             <NavLink to="/Profile">
+               <a class="nav-link" href="#" style={{color: 'white'}}>{JSON.parse(state).name_user}</a>
+             </NavLink>
+             
+             </span> 
+             <span className={this.getNavLinkClass("/Login")}>
+             <NavLink to="/">
+               <a class="nav-link" href="/" onClick={this.logout} style={{color: 'white'}}>Cerrar Sesión</a>
+             </NavLink>
+             </span>
+             </div>
+             :
+             <span className={this.getNavLinkClass("/Login")}>
+             <NavLink to="/Login">
+               <a class="nav-link" href="#" style={{color: 'white'}}>Login</a>
+             </NavLink>
+             </span>
+              
+            }
+            
       </div>
     </nav>
     );
