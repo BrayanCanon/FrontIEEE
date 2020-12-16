@@ -19,11 +19,10 @@ function App ()
           <NavBar></NavBar>
           <Switch>
 
-            <Route path="/Capitulos/ComputerSociety" component={ChapterArea}/>
-            <Route path="/Capitulos/RAS" component={ChapterArea}/>
+            <Route path="/Capitulos/:id_chapter" component={ChapterArea}/>
             
             <Route path="/Login" component={Login}/>
-            <Route path="/" component={MainComponent}/>
+            <Route exact path="/" component={MainComponent}/>
         
           </Switch> 
         </div>

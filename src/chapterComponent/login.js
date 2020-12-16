@@ -25,7 +25,7 @@ class Login extends Component {
     this.handle = (event) => {
       event.preventDefault();
       event.stopPropagation();
-      axios.post('http://localhost:3001/api/Sesion/inicioSesion',{
+      axios.post(process.env.REACT_APP_ENDPOINT+'/api/Sesion/inicioSesion',{
         name_user: this.state.usuario,
         u_password: this.state.contrasena
       }).then( (response) => {

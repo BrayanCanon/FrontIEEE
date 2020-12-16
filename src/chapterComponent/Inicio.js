@@ -8,11 +8,33 @@ import 'react-calendar/dist/Calendar.css';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import { NavLink, withRouter, Link } from 'react-router-dom';
 
+const axios = require("axios")
 
 class Inicio extends Component
 {
+    constructor(props){
+        super(props);
+        this.state = {
+            id_chapter: this.props.match.params.chapter
+        };
+
+    }
+    getChapter=()=>{
+
+        axios.get(process.env.REACT_APP_ENDPOINT+'/api/Chapters/'+this.state.id_chapter+'/getInfo',{
+            headers: {
+                'auth-token': localStorage.getItem('token'),
+            }
+        })
+      .then((response)=>{
+       console.log("Response")
+       console.log(response)
+      })
+      .catch((err) => {console.log(err)})
+    }
     render()
     {
+        this.getChapter()
         return(
             <Container fluid>
                 <br/>

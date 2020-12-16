@@ -1,13 +1,34 @@
 import React, {Component} from 'react';
 import {NavLink, withRouter} from 'react-router-dom';
 
+const axios = require("axios");
 
 class NavBar extends Component
 {
+  constructor(props) {
+    super(props);
+    this.state = {
+      chapters: []
+    };
+  }
+
+  componentDidMount() {
+    axios.get(process.env.REACT_APP_ENDPOINT+'/api/Chapters/',{
+      headers: {
+          'auth-token': localStorage.getItem('token'),
+      }
+  })
+    .then(
+      (res) => {
+        this.setState({chapters: res.data})
+      }
+    ).catch( (err) => {
+      console.log(err)
+    }
+    )  }
   logout=()=>{
     localStorage.removeItem('usuario')
     localStorage.removeItem('token')
-
   }
 
   getNavLinkClass = (path) => {
@@ -37,14 +58,16 @@ class NavBar extends Component
           Capítulos
         </a>
         <div className="dropdown-menu "aria-labelledby="navbarDropdown">
-          <NavLink to="/Capitulos/ComputerSociety">
-            <a className="dropdown-item" href="#">Computer Society</a>
-          </NavLink>
-          <div className="dropdown-divider"></div>
-          <NavLink to="/Capitulos/RAS">
-            <a className="dropdown-item" href="#">RAS</a>
-          </NavLink>
-        </div>
+            {this.state.chapters.length == 0 ? 
+              '':
+            this.state.chapters.map((chapter, i) => <div key={i}>
+            <NavLink to={`Capitulos/${chapter.id_chapter}`}>
+                <a className="dropdown-item" href="#">{chapter.name_chapter}</a>
+              </NavLink>
+              <div className="dropdown-divider"></div>
+              </div>)
+            }
+          </div>
       </li>
           <li className="nav-item">
             <a className="nav-link" href="#">Contactanos</a>

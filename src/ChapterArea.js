@@ -15,6 +15,10 @@ class ChapterArea extends Component
     constructor(props)
     {
         super(props);
+        this.state = {
+            id_chapter: this.props.match.params.id_chapter
+        };
+        this.setState({id_chapter: this.props.match.params.id_chapter})
     }
 
     render()
@@ -24,7 +28,7 @@ class ChapterArea extends Component
                 <Router>
                     <div className="App">
                         <NavChapters></NavChapters>
-                        <Redirect to="/Capitulos/Inicio/:chapter" component={Inicio}/> 
+                        <Redirect to={`/Capitulos/Inicio/${this.state.id_chapter}`} component={Inicio}/> 
                     <Switch>
                         <Route path="/Capitulos/Galeria/ModalImage/:chapter" component={ModalArticles}/>
                         <Route path="/Capitulos/Galeria/Agregar/:chapter" component={AddPictureForm}/>
